@@ -1,48 +1,28 @@
-import React from "react";
-import { GoogleMap, useJsApiLoader } from "@react-google-maps/api";
+import React, { useEffect, useRef, useState } from "react";
+import mapboxgl from "mapbox-gl";
 
-const containerStyle = {
-  width: "600px",
-  height: "600px",
-};
-
-const center = {
-  lat: 53.676876,
-  lng: 84.989619,
-};
-
-function MyComponent() {
-  const { isLoaded } = useJsApiLoader({
-    id: "google-map-script",
-    googleMapsApiKey: "AIzaSyDkWa_jq4K0ylypN21gKQROAyjluCw9V-g",
+const Map = () => {
+  const mapContainer = useRef(null);
+  const map = useRef(null);
+  const [lng, setLng] = useState(84.989619);
+  const [lat, setLat] = useState(53.676876);
+  const [zoom, setZoom] = useState(16);
+  useEffect(() => {
+    if (map.current) return;
+    map.current = new mapboxgl.Map({
+      container: mapContainer.current,
+      style: "mapbox://styles/mapbox/streets-v11",
+      center: [lng, lat],
+      zoom: zoom,
+    });
   });
-
-  const [map, setMap] = React.useState(null);
-
-  const onLoad = React.useCallback(function callback(map) {
-    const bounds = new window.google.maps.LatLngBounds(center);
-    map.fitBounds(bounds);
-    setMap(map);
-  }, []);
-
-  const onUnmount = React.useCallback(function callback(map) {
-    setMap(null);
-  }, []);
-
-  return isLoaded ? (
-    <GoogleMap
-      mapContainerStyle={containerStyle}
-      center={center}
-      zoom={16}
-      onLoad={onLoad}
-      onUnmount={onUnmount}
-    >
-      {/* Child components, such as markers, info windows, etc. */}
-      <></>
-    </GoogleMap>
-  ) : (
-    <></>
+  mapboxgl.accessToken =
+    "pk.eyJ1IjoiZ3Jzam9iIiwiYSI6ImNsNWdwMWw2bTAxbm4zZnMzajF5bm5jbHcifQ.OKPDF4FgbQe0hS1UsExvaw";
+  return (
+    <div>
+      <div ref={mapContainer} className="map-container" />
+    </div>
   );
-}
+};
 
-export default React.memo(MyComponent);
+export default Map;
