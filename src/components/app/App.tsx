@@ -6,12 +6,12 @@ import CustomMarker from "../marker/Marker";
 import { DataService } from "../../service/data-service";
 
 const App = () => {
+  const locoArray = DataService.getData();
   const MAPBOX_TOKEN =
     "pk.eyJ1IjoiZ3Jzam9iIiwiYSI6ImNsNWdwMWw2bTAxbm4zZnMzajF5bm5jbHcifQ.OKPDF4FgbQe0hS1UsExvaw";
-  const locoArray = DataService.getData();
   return (
     <>
-      <h1>start</h1>
+      <h1 style={{ textAlign: "center" }}>Locomotive Map</h1>
       <Map
         initialViewState={{
           latitude: 53.6764,
